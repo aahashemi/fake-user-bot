@@ -12,18 +12,16 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
 )
 logger = logging.getLogger(__name__)
-Admin_Chat_ID = 875163639
+
 
 MALE = 'Male ♂'
 FEMALE = 'Female ♀'
 RANDOM = 'Random ♂♀'
-DONATE = 'Donate ☕️'
 
-Button = [[RANDOM], [MALE, FEMALE], [DONATE]]
+
+Button = [[RANDOM], [MALE, FEMALE]]
 ButtonPack = ReplyKeyboardMarkup(Button, resize_keyboard=True)
 
-buyMeCoffee = [[InlineKeyboardButton('Buy me a coffee ☕️', callback_data='donate', url='https://www.buymeacoffee.com/aahashemi')]]
-buyMeCoffeePack = InlineKeyboardMarkup(buyMeCoffee)
 # ----------------------------------------------------------------------------------------
 
 def generate_fake_user(gender=None):
@@ -31,7 +29,7 @@ def generate_fake_user(gender=None):
     querystring = {"gender": gender}
     headers = {
         'x-rapidapi-host': "fake-users6.p.rapidapi.com",
-        'x-rapidapi-key': "f46d0d682dmsh95ed9f4dc7225e2p146570jsn1d8f86b7de46"
+        'x-rapidapi-key': "YOUR API PRIVATE KEY"
     }
     response = requests.request("GET", url, headers=headers, params=querystring)
     json_response = response.json()
@@ -111,22 +109,10 @@ def TextHandler(update: Update, context: CallbackContext) -> None:
             photo=fake_user[1]
         )
 
-    elif text == DONATE:
-        color_list = ['black', 'blue', 'green', 'orange', 'red', 'violet', 'white', 'yellow']
-        color = (random.choice(color_list))
-        txt = ''
-        update.message.reply_photo(
-            photo=open(f"{color}.png", "rb"),
-            caption=txt,
-            reply_markup=buyMeCoffeePack
-        )
-        context.bot.send_message(chat_id=Admin_Chat_ID,
-                                 text=f'☕ @{update.effective_user.username} might donate!')
-
 
 def main():
-    TOKEN = "5179969659:AAFQn7vHTXl2554p4n-_cHiZey51SagAGnI"
-    APP_NAME = 'https://fake-user.herokuapp.com/'
+    TOKEN = "YOUR TELEGRAM BOT TOKEN"
+    APP_NAME = 'https://<YOUR HEROKU APP NAME>.herokuapp.com/'
 
     updater = Updater(TOKEN, use_context=True)
     updater.dispatcher.add_handler(CommandHandler('start', start))
